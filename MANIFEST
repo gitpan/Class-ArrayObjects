@@ -4,3 +4,4 @@ MANIFEST
 README
 Makefile.PL
 t/base.t
+META.yml                                 Module meta-data (added by MakeMaker)

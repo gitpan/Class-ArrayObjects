@@ -3,6 +3,7 @@
 # Class::ArrayObjects - Utility class for array based objects         #
 # Robin Berjon <robin@knowscape.com>                                  #
 # ------------------------------------------------------------------- #
+# 01/12/2003 - v1.02 support non-existing "with"                      #
 # 07/07/2003 - v1.01 patch by Slaven Rezic so that "extend" will look #
 #              into @ISA in case the class isn't specified.           #
 # 06/07/2002 - v1.00 clean up                                         #
@@ -19,7 +20,7 @@ use strict;
 no  strict 'refs';
 use vars qw($VERSION %packages);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 
 #---------------------------------------------------------------------#
@@ -39,6 +40,7 @@ sub import {
 
     # for basic definition
     if ($method eq 'define') {
+        $options->{fields} ||= [];
         $idx = 0;
         @fld = @{$options->{fields}};
         @real_fld = @fld;
@@ -46,6 +48,7 @@ sub import {
 
     # for extension
     elsif ($method eq 'extend') {
+        $options->{with} ||= [];
         {
             no strict 'refs';
             if (not defined $options->{class} and @{ $pkg . '::ISA' } == 1) {
