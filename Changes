@@ -1,0 +1,15 @@
+Revision history for Perl extension Class::ArrayObjects.
+
+0.04  Sat Apr 21 22:34:20 2001
+	- many many documentation updates 
+	- first public release
+
+0.03  02/04/2001 
+	- feature upgrade in view of release
+
+0.02  28/01/2001 
+	- a few enhancements and uses (production tests)
+
+0.01  12/12/2000 
+	- initial hack
+

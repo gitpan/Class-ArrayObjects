@@ -1,0 +1,6 @@
+ArrayObjects.pm
+Changes
+MANIFEST
+README
+Makefile.PL
+t/base.t
