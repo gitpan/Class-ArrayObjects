@@ -3,6 +3,8 @@
 # Class::ArrayObjects - Utility class for array based objects         #
 # Robin Berjon <robin@knowscape.com>                                  #
 # ------------------------------------------------------------------- #
+# 07/07/2003 - v1.01 patch by Slaven Rezic so that "extend" will look #
+#              into @ISA in case the class isn't specified.           #
 # 06/07/2002 - v1.00 clean up                                         #
 # 21/04/2001 - v0.04 many many documentation updates + release        #
 # 02/04/2001 - v0.03 feature upgrade in view of release               #
@@ -17,7 +19,7 @@ use strict;
 no  strict 'refs';
 use vars qw($VERSION %packages);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 
 #---------------------------------------------------------------------#
@@ -44,6 +46,12 @@ sub import {
 
     # for extension
     elsif ($method eq 'extend') {
+        {
+            no strict 'refs';
+            if (not defined $options->{class} and @{ $pkg . '::ISA' } == 1) {
+                $options->{class} = ${ $pkg . '::ISA' }[0];
+            }
+        }
         die "[$pkg]: can't extend undefined class $options->{class} with package $pkg"
             unless defined $packages{$options->{class}};
 
@@ -130,7 +138,7 @@ hurt).
 
 Second: memory. Memory was much more important to me as I was
 targeting a mod_perl environment where every bit of memory tends to
-count. Depending on how they are used, arrays use from 30% up to 65% 
+count. Depending on how they are used, arrays use from 30% up to 65%
 less space than hashes. As a rule of thumb the more keys you have, the
 more you may save.
 
@@ -220,7 +228,7 @@ use Class::ArrayObjects I<option-name> => I<hashref of options>
                                       fields  => [qw(_foo_ _bar_ BAZ)],
                                     };
 
-C<define> has only one option: C<fields>. It is an arrayref of strings 
+C<define> has only one option: C<fields>. It is an arrayref of strings
 which are the names of the fields you wish to use. They can be anything,
 so long as they are valid Perl sub names.
 
@@ -241,7 +249,8 @@ C<extend> has three options:
 =item * class
 
 This defines the class to extend (it must also use Class::ArrayObjects
-and have been loaded previously).
+and have been loaded previously). If that class is not specified, it will
+look at @ISA. If @ISA contains only one item it will use that one.
 
 =item * with
 
@@ -318,9 +327,11 @@ extension subclasses than for override subclasses, but YMMV.
 
 =head1 ACKNOWLEDGMENTS
 
-Greg Bacon's for his article I<Perl Heresies: Building Objects Out of 
-Arrays> which I read ages ago and inspired this module, one of the 
+Greg Bacon's for his article I<Perl Heresies: Building Objects Out of
+Arrays> which I read ages ago and inspired this module, one of the
 first I put on CPAN.
+
+Slaven Rezic for the @ISA patch.
 
 =head1 AUTHOR
 

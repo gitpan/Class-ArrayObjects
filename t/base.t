@@ -7,7 +7,7 @@ my $loaded = 0;
 #- test loading ----------------------------------------------------#
 BEGIN {
     $|++;
-    print "1..6\n";
+    print "1..7\n";
 }
 END {
     print "not ok 1\n" unless $loaded;
@@ -63,4 +63,16 @@ else {
     print 'not ' if zero != 0;
     print "ok 6\n";
 }
+
+#- test extension without class parameter --------------------------#
+
+package Foo::Test::ClArOb_4;
+BEGIN { @Foo::Test::ClArOb_4::ISA = 'Foo::Test::ClArOb' }
+use Class::ArrayObjects extend => {
+                                    with    => [qw(three four)],
+                                  };
+
+
+print 'not ' if three != 3 or four != 4;
+print "ok 7\n";
 
