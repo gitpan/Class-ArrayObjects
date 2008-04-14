@@ -3,6 +3,13 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'		=> 'Class::ArrayObjects',
-    'VERSION_FROM'	=> 'ArrayObjects.pm', # finds $VERSION
+    'VERSION_FROM'	=> 'lib/Class/ArrayObjects.pm', # finds $VERSION
     'PREREQ_PM'		=> {}, # e.g., Module::Name => 1.1
+    'LICENSE'		=> 'perl',
+    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
+      (
+	ABSTRACT_FROM  => 'lib/Class/ArrayObjects.pm', # retrieve abstract from module
+       	LICENSE        => 'perl',
+    	AUTHOR	       => 'Originan author: Robin Berjon, robin@knowscape.com\n\nManitained by: Ronan Oger, ronan@cpan.org',
+      ) : ()),
 );
